@@ -49,7 +49,7 @@ EXPECTED_FILES = [
 
 def _open_tab_reader(filepath):
     """Open a tab-delimited file and return a csv.reader."""
-    fh = open(filepath, "r", encoding="utf-8", errors="replace", newline="")
+    fh = open(filepath, "r", encoding="iso-8859-1", newline="")
     return csv.reader(fh, delimiter="\t"), fh
 
 
