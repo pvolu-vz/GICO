@@ -13,6 +13,10 @@ When the user's request is about **testing, dry-running, validating, locally exe
 
 Trigger phrases for delegation: dry-run, test integration, validate payload, local test, run with samples, check payload, verify integration, test the script, run locally, push to lab, lab environment, test push.
 
+### Automatic post-generation validation
+
+After completing Step 2 (artifact generation), **always delegate to the `OAA Dry-Run Tester` sub-agent** to run a local dry-run (Mode A) before presenting the final output summary. This validates that the generated script executes without errors against the sample data. See [quality-checklist.md — Step 3a](../skills/veza-oaa-integration/references/quality-checklist.md) for the full delegation protocol and parameter template. Skip only if `samples/` contains no data files.
+
 ## Reference Materials
 
 See [../skills/veza-oaa-integration/references/references.md](../skills/veza-oaa-integration/references/references.md) for all external reference materials.
@@ -67,6 +71,9 @@ Use the system name as a slug (lowercase, hyphens) for file naming. Save all gen
 
 ---
 
-## Step 3 — Output Summary
+## Step 3 — Output Summary & Validation
 
-After generating all files, follow the output and verification steps in [../skills/veza-oaa-integration/references/quality-checklist.md](../skills/veza-oaa-integration/references/quality-checklist.md).
+After generating all files:
+
+1. **Auto-validate** — Delegate to `OAA Dry-Run Tester` (Mode A) as described in Step 3a of the quality checklist. Pre-supply all parameters so the sub-agent runs non-interactively.
+2. **Report** — Follow the output summary and checklist in [../skills/veza-oaa-integration/references/quality-checklist.md](../skills/veza-oaa-integration/references/quality-checklist.md), incorporating the dry-run results into the auto-validated checklist items.
