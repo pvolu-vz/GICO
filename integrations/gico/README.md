@@ -21,6 +21,42 @@ The `gico.py` script is an OAA (Open Authorization API) integration that reads G
 | RoleAction  | Role → Permission     | Which actions each role grants |
 | UserRole    | Role Assignment       | User assigned to role on scope resource |
 
+### Relationship Model
+
+The six source files combine into a single access chain:
+
+```
+Users.txt                UserRoles.txt               Roles.txt
+  │                            │                          │
+  │  username ─────────────────┤                          │
+  │                    role_name ─────────────────────────┤
+  │                    scope_code ──────────┐             │
+  │                                         │             │
+  ▼                                         ▼             ▼
+Local User  ──── assigned (per Scope) ────▶ Local Role ◀── role_code
+                                                │
+                                       RoleActions.txt
+                                       (granted = 1 only)
+                                                │
+                                                ▼
+                                       Custom Permission
+                                       (Action code from Actions.txt)
+
+Scopes.txt ──▶ Resource (scope)
+               e.g. "030" = GEDUS plant
+```
+
+**Concrete example:**
+
+- `abelss` (Sven Abels) is in `UserRoles.txt` with role `ADMINISTRATOR FULL` on scopes `030`, `041`, etc.
+- `RoleActions.txt` maps `ADMINISTRATOR FULL` → actions `01016`, `01022`, ... (only rows where granted=`1`)
+- Result in Veza: Sven can perform action `01016` **on the GEDUS scope resource**
+
+Key rules applied during the build:
+- `granted=0` rows in `RoleActions.txt` are silently discarded
+- A `UserRole` with no `scope_code` applies the role to the whole application (not a specific plant)
+- User `email` is used as the Veza identity link to map GICO users to IdP accounts
+
 ### What Appears in Veza
 
 After a successful push, you will see in the Veza Access Graph:
